@@ -1,5 +1,7 @@
 # Keycloak Custom User SPI with MS SQL Server Database
 
+[![Java CI with Maven](https://github.com/dusklight/keycloak-custom-user-storage-spi/actions/workflows/maven.yml/badge.svg)](https://github.com/dusklight/keycloak-custom-user-storage-spi/actions/workflows/maven.yml)
+
 This repo contains a demo of Keycloak Custom User SPI (Service Provider Interface) that uses MS SQL Database.
 
 More info can be found in my [blog post](https://blog.dusklight.com/2022/01/keycloak-custom-user-storage-spi-with-sql-server-database.html).
