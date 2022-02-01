@@ -1,8 +1,8 @@
-# Keycloak Custom User SPI with MS SQL Server Database
+# Keycloak Custom User Storage SPI with MS SQL Server Database
 
 [![Java CI with Maven](https://github.com/dusklight/keycloak-custom-user-storage-spi/actions/workflows/maven.yml/badge.svg)](https://github.com/dusklight/keycloak-custom-user-storage-spi/actions/workflows/maven.yml)
 
-This repo contains a demo of Keycloak Custom User SPI (Service Provider Interface) that uses MS SQL Database.
+This repo contains a demo of Keycloak Custom User Storage SPI (Service Provider Interface) that uses MS SQL Database.
 
 More info can be found in my [blog post](https://blog.dusklight.com/2022/01/keycloak-custom-user-storage-spi-with-sql-server-database.html).
 
@@ -11,17 +11,17 @@ More info can be found in my [blog post](https://blog.dusklight.com/2022/01/keyc
 * Allows Keycloak to access users stored in a custom MS SQL database.
 * Allows configuring MS SQL connection from Keycloak's admin user interface.
 * Exposes custom user data as attributes in Keycloak.
-* Validates user passwords within the Custom User SPI, using the `pbkdf2` algorithm with the same hashing configuration as Keycloak's default values.  
+* Validates user passwords within the Custom User Storage SPI, using the `pbkdf2` algorithm with the same hashing configuration as Keycloak's default values.  
 
 ## Try it out using docker-compose
 
 * Run `docker-compose up` from the root folder.  This will:
-  * Build the Custom User SPI using a maven image, then deploy it to the Keycloak image.
+  * Build the Custom User Storage SPI using a maven image, then deploy it to the Keycloak image.
   * Spin up the MS SQL container and create a demo custom database with sample data and an empty Keycloak database.
   * Spin up the Keycloak container.
 * Once all containers have started, login to Keycloak by going to https://localhost:8080
 * Navigate to *User Federation*, and select `dusklight-database`.
-  * Keycloak will show a screen where you can configure the SQL Server connection for the Custom User SPI.
+  * Keycloak will show a screen where you can configure the SQL Server connection for the Custom User Storage SPI.
   * Enter the following:
     * Database Server Host Name or IP: `mssql`
     * Database Name: `Dusklight`
@@ -30,7 +30,7 @@ More info can be found in my [blog post](https://blog.dusklight.com/2022/01/keyc
       * Note that this password is not stored securely in Keycloak.  For production use, implement other means of storing this, or use Integrated Security. 
   * Click on the *Save* button.
 
-The Custom User SPI should now have been added as a user federation in Keycloak.  To check if the users can be accessed in Keycloak, follow the steps below: 
+The Custom User Storage SPI should now have been added as a user federation in Keycloak.  To check if the users can be accessed in Keycloak, follow the steps below: 
 * Navigate to *Users*.
 * Click on *View all users* button.
 * It should show two users from the database - [Alice and Bob](https://en.wikipedia.org/wiki/Alice_and_Bob).
