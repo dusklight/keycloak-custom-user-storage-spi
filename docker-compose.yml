@@ -1,0 +1,42 @@
+# Based on: https://github.com/keycloak/keycloak-containers/blob/d36dcd796aa4f3a75cea3a3e48ec77b95e11e4e2/docker-compose-examples/keycloak-mssql.yml (main branch as of 12/3/2021)
+
+# Note: The "Version" element is optional as of version 1.27 (https://github.com/docker/compose/releases/tag/1.27.0)
+# See also https://docs.docker.com/compose/, https://github.com/compose-spec/compose-spec/blob/master/spec.md#version-top-level-element
+
+services:
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password!23
+      - MSSQL_PID=Developer
+
+  mssqlscripts:
+    image: mcr.microsoft.com/mssql-tools
+    depends_on:
+      - mssql
+    volumes:
+      - ./docker-scripts:/mnt/scripts
+    command: /bin/bash -c 'until /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P "Password!23" -i /mnt/scripts/init-mssql-db.sql; do sleep 5; done'
+
+  keycloak:
+    build:
+      context: .
+      dockerfile: keycloak.dockerfile
+    image: keycloak-demo
+    depends_on:
+       - mssql
+       - mssqlscripts
+    ports:
+       - "8080:8080"
+    environment:
+       - KEYCLOAK_USER=admin
+       - KEYCLOAK_PASSWORD=admin
+       - DB_VENDOR=mssql
+       - DB_USER=sa
+       - DB_PASSWORD=Password!23
+       - DB_ADDR=mssql
+       - DB_DATABASE=Keycloak
